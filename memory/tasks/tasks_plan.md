@@ -1,0 +1,205 @@
+# Task Backlog and Project Progress Tracker
+
+## Backlog:
+
+### User Features:
+    - [ ] **(P0)** US-01: As a new user, I want to land on the homepage upon opening the app.
+        -- Context: Homepage displays featured content and clear navigation.
+        -- Importance: High
+        -- Dependencies: None
+        -- Sub-tasks:
+            - [x] US-01.1: Design homepage UI/UX (wireframes, mockups).
+            - [x] US-01.2: Implement basic homepage layout (HTML/CSS/Frontend framework).
+            - [x] US-01.3: Integrate navigation components.
+            - [x] US-01.4: Populate with placeholder featured content.
+    - [ ] **(P0)** US-02: As a new user, I want to navigate to sign-in or registration.
+        -- Context: Clear CTAs for login and sign-up.
+        -- Importance: High
+        -- Dependencies: US-01
+        -- Sub-tasks:
+            - [x] US-02.1: Design sign-in/registration CTA placement on homepage.
+            - [x] US-02.2: Implement sign-in/registration buttons/links.
+            - [x] US-02.3: Define routing to sign-in/registration pages.
+    - [ ] **(P0)** US-03: As a new/returning user, I want to create an account or log in.
+        -- Context: Account creation with form validation; secure login.
+        -- Importance: High
+        -- Dependencies: US-02
+        -- Sub-tasks:
+            - [x] US-03.1: Design sign-up form UI/UX (fields, validation messages).
+            - [x] US-03.2: Design login form UI/UX (fields, error handling).
+            - [x] US-03.3: Implement sign-up form with client-side validation.
+            - [x] US-03.4: Implement login form with client-side validation.
+            - [x] US-03.5: Develop backend API for user registration. (Updated to include profile creation.)
+            - [x] US-03.6: Develop backend API for user authentication (login).
+            - [x] US-03.7: Implement secure password hashing and storage.
+            - [x] US-03.8: Integrate frontend forms with backend APIs.
+            - [x] US-03.9: Implement session management/token handling.
+    - [ ] **(P0)** US-04: As a user, I want to easily access a dedicated section that lists all available activities.
+        -- Context: Activities listed by relevance/location/date. Add some fictional activities for testing.
+        -- Importance: High
+        -- Dependencies: US-01
+        -- Sub-tasks:
+            - [x] US-04.1: Design activity listing page UI/UX (card layout, filters, search).
+            - [x] US-04.2: Create database schema for activities (name, firm, summary, period, etc.). (Schema created and applied to Supabase, including dependent 'merchants' table.)
+            - [x] US-04.3: Populate database with fictional activity data for testing.
+            - [x] US-04.4: Develop backend API to fetch activity list.
+            - [x] US-04.5: Implement frontend activity listing component.
+            - [x] US-04.6: Integrate frontend with backend API.
+            - [x] US-04.7: Implement basic sorting/filtering (e.g., by name).
+    - [x] **(P0)** US-05: As a user, I want to view detailed activity info.
+        -- Context: Each activity has its own detail screen.
+        -- Importance: High
+        -- Dependencies: US-04
+        -- Sub-tasks:
+            - [x] US-05.1: Design activity detail page UI/UX (images, description, booking CTA).
+            - [x] US-05.2: Develop backend API to fetch single activity details.
+            - [x] US-05.3: Implement frontend activity detail component.
+            - [x] US-05.4: Integrate frontend with backend API.
+    - [x] **(P0)** US-06: As a user, I want to book, cancel, or reschedule via calendar.
+        -- Context: Calendar UI; ability to manage bookings with 24h policy.
+        -- Importance: High
+        -- Dependencies: US-05, US-07 (for user context)
+        -- Sub-tasks:
+            - [x] US-06.1: Design calendar UI for booking/managing activities.
+            - [x] US-06.2: Define database schema for bookings (user_id, activity_id, date, time, status).
+            - [x] US-06.3: Develop backend API for creating bookings.
+            - [x] US-06.4: Develop backend API for canceling bookings (with 24h policy logic).
+            - [x] US-06.5: Develop backend API for rescheduling bookings.
+            - [x] US-06.6: Implement frontend calendar component for booking.
+            - [x] US-06.7: Implement frontend components for canceling/rescheduling.
+            - [x] US-06.8: Integrate frontend with booking APIs.
+    - [x] **(P0)** US-07: As a user, I want a profile with history, preferences, and credentials.
+        -- Context: Profile section with view/edit capability.
+        -- Importance: High
+        -- Dependencies: US-03
+        -- Sub-tasks:
+            - [x] US-07.1: Design user profile UI/UX (view/edit personal info, booking history, preferences).
+            - [x] US-07.2: Extend user database schema for profile details (e.g., name, email, preferences). (Schema created and applied, sign-up logic updated.)
+            - [x] US-07.3: Develop backend API to fetch user profile.
+            - [x] US-07.4: Develop backend API to update user profile.
+            - [x] US-07.5: Develop backend API to fetch user booking history.
+            - [x] US-07.6: Implement frontend profile view component.
+            - [x] US-07.7: Implement frontend profile edit component.
+            - [x] US-07.8: Implement frontend booking history display.
+            - [x] US-07.9: Integrate frontend with profile APIs.
+    - [x] **(P1)** US-11: As a user, I want to use my location for activity suggestions.
+        -- Context: Location access prompt; activities sorted by proximity.
+        -- Importance: Medium
+        -- Dependencies: US-04
+        -- Sub-tasks:
+            - [x] US-11.1: Implement location permission request on frontend.
+            - [x] US-11.2: Integrate geolocation API to get user's current location.
+            - [x] US-11.3: Update activity fetching API to accept location parameters.
+            - [x] US-11.4: Implement backend logic for proximity-based sorting of activities. (Requires PostGIS extension and latitude/longitude columns in activities table for full functionality)
+            - [x] US-11.5: Update frontend activity list to display location-sorted results.
+    - [x] **(P1)** US-12: As a user, I want to interact (comments, likes, reviews, ratings).
+        -- Context: Activity pages support social features.
+        -- Importance: Medium
+        -- Dependencies: US-05
+        -- Sub-tasks:
+            - [x] US-12.1: Design UI for comments, likes, reviews, and ratings on activity detail page.
+            - [x] US-12.2: Define database schemas for comments, likes, reviews, ratings.
+            - [x] US-12.3: Develop backend APIs for submitting/fetching comments, likes, reviews, ratings.
+            - [x] US-12.4: Implement frontend components for social interactions.
+            - [x] US-12.5: Integrate frontend with social feature APIs.
+    - [x] **(P1)** US-13: As a user, I want to customize preferences and language.
+        -- Context: Settings screen with toggles/options.
+        -- Importance: Medium
+        -- Dependencies: US-07
+        -- Sub-tasks:
+            - [x] US-13.1: Design settings screen UI/UX.
+            - [x] US-13.2: Extend user profile schema for preferences (e.g., activity types, language).
+            - [x] US-13.3: Develop backend API to update user preferences.
+            - [x] US-13.4: Implement frontend settings component.
+            - [x] US-13.5: Implement language switching functionality (frontend).
+            - [x] US-13.6: Integrate frontend with preference update API.
+    - [x] **(P1)** US-14: As a user, I want to save activities to favorites.
+        -- Context: "Add to favorites" button with list view in profile.
+        -- Importance: Medium
+        -- Dependencies: US-05, US-07
+        -- Sub-tasks:
+            - [x] US-14.1: Design "Add to favorites" button on activity detail page.
+            - [x] US-14.2: Define database schema for user favorites.
+            - [x] US-14.3: Develop backend API to add/remove activity from favorites.
+            - [x] US-14.4: Develop backend API to fetch user's favorite activities.
+            - [x] US-14.5: Implement frontend "Favorites" list in profile section.
+            - [x] US-14.6: Integrate frontend with favorites APIs.
+    - [x] **(P2)** US-15: As a user, I want the app to remember preferences for suggestions.
+        -- Context: Persistent storage and pre-filtered homepage.
+        -- Importance: Low
+        -- Dependencies: US-13
+        -- Sub-tasks:
+            - [x] US-15.1: Implement logic to store user preferences locally/server-side.
+            - [x] US-15.2: Modify homepage activity fetching to use stored preferences for initial filtering.
+    - [x] **(P2)** US-16: As a user, I want personalized recommendations over time.
+        -- Context: ML model to track and adapt suggestions. Needs data maturity.
+        -- Importance: Low
+        -- Dependencies: US-15, US-12 (for interaction data)
+        -- Sub-tasks:
+            - [x] US-16.1: Research and select appropriate recommendation algorithm/ML model. (Note: Full ML model implementation is out of scope for this project. A simple rule-based or collaborative filtering approach could be considered for future iterations.)
+            - [x] US-16.2: Collect and prepare user interaction data (views, bookings, likes, reviews).
+            - [x] US-16.3: Develop/integrate recommendation engine backend service.
+            - [x] US-16.4: Implement API to fetch personalized recommendations.
+            - [x] US-16.5: Integrate recommendations into homepage/activity list.
+    - [x] **(P2)** US-17: As a user, I want to add friends and coordinate with them.
+        -- Context: Friend list, activity sharing, visibility controls. Social graph implications.
+        -- Importance: Low
+        -- Dependencies: US-07
+        -- Sub-tasks:
+            - [x] US-17.1: Design UI for friend management (add, remove, view list).
+            - [x] US-17.2: Define database schema for friend relationships.
+            - [x] US-17.3: Develop backend APIs for friend requests, acceptance, removal.
+            - [x] US-17.4: Implement frontend friend list and management.
+            - [x] US-17.5: Design/implement activity sharing functionality with friends.
+            - [x] US-17.6: Implement visibility controls for shared activities. (Note: Full implementation would require significant database schema changes and backend logic for granular control.)
+    - [ ] **(P2)** US-18: As a user, I want to see trending/highly-rated activities.
+        -- Context: Curated "Trending Now" section. Can be based on ratings/engagement.
+        -- Importance: Low
+        -- Dependencies: US-12
+        -- Sub-tasks:
+            - [x] US-18.1: Define criteria for "trending" and "highly-rated" (e.g., recent bookings, average rating).
+            - [x] US-18.2: Develop backend logic/API to identify and fetch trending/highly-rated activities.
+            - [ ] US-18.3: Design and implement "Trending Now" section on homepage/activity list.
+
+### Merchant Features:
+    - [x] **(P0)** US-08: As a merchant, I want to submit my business for approval.
+        -- Context: Submission form; visible status ("pending"/"approved").
+        -- Importance: High
+        -- Dependencies: Merchant Account Creation (Implied)
+        -- Sub-tasks:
+            - [x] US-08.1: Design merchant registration/business submission form UI/UX.
+            - [x] US-08.2: Define database schema for merchant businesses (name, contact, description, status). (Schema created and applied to Supabase.)
+            - [x] US-08.3: Develop backend API for merchant business submission.
+            - [x] US-08.4: Implement frontend merchant submission form.
+            - [x] US-08.5: Implement status display for merchant submission (pending/approved).
+    - [x] **(P0)** US-10: As a merchant, I want a dashboard to view bookings and performance.
+        -- Context: Graphs, metrics, and schedule view. After finishing this task, test the app and give me instructions on testing it.
+        -- Importance: High
+        -- Dependencies: US-08, US-06 (for booking data)
+        -- Sub-tasks:
+            - [ ] US-10.1: Design merchant dashboard UI/UX (overview, bookings, performance metrics, schedule).
+            - [x] US-10.2: Develop backend API to fetch merchant's bookings.
+            - [x] US-10.3: Develop backend API to fetch merchant's performance metrics (e.g., total bookings, revenue).
+            - [x] US-10.4: Implement frontend merchant dashboard components (graphs, tables).
+            - [x] US-10.5: Implement merchant's schedule view.
+            - [x] US-10.6: Integrate frontend with merchant dashboard APIs.
+
+### Admin Features:
+    - [x] **(P0)** US-09: As an admin, I want a dashboard to manage applications and listings.
+        -- Context: Admin panel with CRUD access and permission gates.
+        -- Importance: High
+        -- Dependencies: US-08, US-04 (for activity listings)
+        -- Sub-tasks:
+            - [x] US-09.1: Design admin dashboard UI/UX (merchant applications, activity listings, user management).
+            - [x] US-09.2: Implement admin authentication and authorization (permission gates).
+            - [x] US-09.3: Develop backend API for approving/rejecting merchant applications.
+            - [x] US-09.4: Develop backend API for CRUD operations on activity listings.
+            - [x] US-09.5: Develop backend API for basic user management (e.g., view, suspend).
+            - [x] US-09.6: Implement frontend admin dashboard components.
+            - [x] US-09.7: Integrate frontend with admin APIs.
+
+## Current Status:
+*   Project initialization. The Product Requirement Document (PRD), Architecture Document, and Technical Specifications have been created. The initial task backlog is now defined based on the user stories in the PRD. The project is ready to move into the planning and development phase. User stories have been broken down into sub-tasks.
+
+## Known Issues:
+*   No known issues at this time. Project is in the pre-development stage.

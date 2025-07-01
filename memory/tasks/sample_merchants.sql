@@ -1,0 +1,2 @@
+INSERT INTO merchants (id, name, contact_email, description, status) VALUES
+('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Sample Merchant Co.', 'contact@samplemerchant.com', 'A sample merchant for testing purposes.', 'approved');
