@@ -49,12 +49,14 @@ export default function SignIn() {
         });
 
         const data = await response.json();
+        console.log("Server response:", { status: response.status, data }); // Log the full response
 
-        if (response.ok) {
-          alert("Sign In successful!");
-          router.push("/"); // Redirect to homepage
-        } else {
+        if (!response.ok) {
           alert(`Sign In failed: ${data.error}`);
+        } else {
+          alert("Sign In successful!");
+          router.push('/');
+          router.refresh(); // Force a re-render to update session status
         }
       } catch (error) {
         console.error("Error during sign in:", error);

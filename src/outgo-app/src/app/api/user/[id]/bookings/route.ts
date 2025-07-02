@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '../../../../../../utils/supabase/client';
+import { createServerSupabaseClient } from '../../../../../utils/supabase/server';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id: userId } = params;
+    const supabase = await createServerSupabaseClient();
+    const { id: userId } = await params;
 
     const { data: bookings, error } = await supabase
       .from('bookings')
-      .select('*, activities(*)') // Select all booking fields and join with activity details
+      .select('*') // Select all booking fields
       .eq('user_id', userId);
 
     if (error) {
