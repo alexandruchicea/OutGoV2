@@ -2,7 +2,7 @@
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
+
 import { useState, useEffect } from 'react';
 import BookingCalendar from '../../../../components/BookingCalendar';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -23,20 +23,10 @@ interface Activity {
   status: string;
 }
 
-interface Comment {
-  id: string;
-  user_id: string;
-  content: string;
-  created_at: string;
-}
-
-interface Review {
-  id: string;
-  user_id: string;
-  rating: number;
-  review_text: string;
-  created_at: string;
-}
+import { useComments } from '@/hooks/useComments';
+import { useLikes } from '@/hooks/useLikes';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useRatings } from '@/hooks/useRatings';
 
 async function getActivity(id: string): Promise<Activity | null> {
   try {
@@ -67,69 +57,7 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
   const [user, setUser] = useState<any>(null);
   const supabase = createClientComponentClient();
 
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newCommentText, setNewCommentText] = useState('');
-  const [likesCount, setLikesCount] = useState(0);
-  const [userLiked, setUserLiked] = useState(false);
-  const [userRating, setUserRating] = useState(0);
-  const [reviewText, setReviewText] = useState('');
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const fetchComments = async (activityId: string) => {
-    try {
-      const response = await fetch(`/api/comments?activity_id=${activityId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setComments(data);
-      } else {
-        console.error('Failed to fetch comments', await response.text());
-      }
-    } catch (err) {
-      console.error('Error fetching comments:', err);
-    }
-  };
-
-  const fetchLikesAndRating = async (activityId: string, userId: string) => {
-    try {
-      // Fetch likes count
-      const likesResponse = await fetch(`/api/likes?activity_id=${activityId}`);
-      if (likesResponse.ok) {
-        const data = await likesResponse.json();
-        setLikesCount(data.count);
-        setUserLiked(data.userLiked);
-      } else {
-        console.error('Failed to fetch likes', await likesResponse.text());
-      }
-
-      // Fetch user rating
-      const ratingResponse = await fetch(`/api/reviews?activity_id=${activityId}&user_id=${userId}`);
-      if (ratingResponse.ok) {
-        const data = await ratingResponse.json();
-        if (data.length > 0) {
-          setUserRating(data[0].rating);
-          setReviewText(data[0].review_text || '');
-        }
-      } else {
-        console.error('Failed to fetch user rating', await ratingResponse.text());
-      }
-    } catch (err) {
-      console.error('Error fetching likes/rating:', err);
-    }
-  };
-
-  const checkFavoriteStatus = async (activityId: string, userId: string) => {
-    try {
-      const response = await fetch(`/api/favorites?activity_id=${activityId}&user_id=${userId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setIsFavorite(data.isFavorite);
-      } else {
-        console.error('Failed to fetch favorite status', await response.text());
-      }
-    } catch (err) {
-      console.error('Error checking favorite status:', err);
-    }
-  };
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -145,12 +73,6 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
         const { data: { user } } = await supabase.auth.getUser();
         setUser(user);
 
-        if (user) {
-          fetchComments(fetchedActivity.id);
-          fetchLikesAndRating(fetchedActivity.id, user.id);
-          checkFavoriteStatus(fetchedActivity.id, user.id);
-        }
-
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -159,6 +81,11 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
     }
     fetchData();
   }, [params.id, supabase]);
+
+  const { comments, newCommentText, setNewCommentText, handleSubmitComment } = useComments(activity?.id || '', user?.id);
+  const { likesCount, userLiked, handleLikeToggle } = useLikes(activity?.id || '', user?.id);
+  const { isFavorite, handleFavoriteToggle } = useFavorites(activity?.id || '', user?.id);
+  const { userRating, reviewText, setReviewText, handleSubmitRating } = useRatings(activity?.id || '', user?.id);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -334,19 +261,7 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md p-4 flex justify-between items-center">
-        <div className="text-2xl font-bold text-gray-800">OutGo</div>
-        <nav className="space-x-4">
-          <Link href="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-          <Link href="/activities" className="text-blue-600 font-semibold">Activities</Link>
-          <Link href="/profile" className="text-gray-600 hover:text-blue-600">Profile</Link>
-        </nav>
-        <div className="space-x-4">
-          <Link href="/signin" className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition duration-300">Sign In</Link>
-          <Link href="/signup" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">Sign Up</Link>
-        </div>
-      </header>
+      
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-md overflow-hidden p-6">
@@ -457,7 +372,7 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
             ></textarea>
             <button
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
-              onClick={handleSubmitComment}
+              onClick={() => handleSubmitComment(user)}
             >
               Submit Comment
             </button>
@@ -465,17 +380,7 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-8">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2025 OutGo. All rights reserved.</p>
-          <div className="flex justify-center space-x-4 mt-4">
-            <Link href="#" className="text-gray-400 hover:text-white">About Us</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Contact</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Privacy Policy</Link>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 }

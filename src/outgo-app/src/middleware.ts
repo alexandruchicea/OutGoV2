@@ -9,9 +9,8 @@ export async function middleware(req: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Check if the user is an admin (you'll need to implement your own logic for this)
-  // For example, you might have a 'roles' table or a 'is_admin' column in your profiles table
-  const isAdmin = user && user.email === 'admin@example.com'; // Placeholder logic
+  const { data: { user } } = await supabase.auth.getUser();
+  const isAdmin = user?.email === process.env.ADMIN_EMAIL;
 
   if (req.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
     // Redirect unauthenticated or non-admin users away from admin routes

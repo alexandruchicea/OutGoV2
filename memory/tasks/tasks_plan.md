@@ -45,7 +45,7 @@
             - [x] US-04.4: Develop backend API to fetch activity list.
             - [x] US-04.5: Implement frontend activity listing component.
             - [x] US-04.6: Integrate frontend with backend API.
-            - [x] US-04.7: Implement basic sorting/filtering (e.g., by name).
+            - [x] US-04.7: Implement basic sorting/filtering (e.g., by name), refactored into `ActivityFilters.tsx` component.
     - [x] **(P0)** US-05: As a user, I want to view detailed activity info.
         -- Context: Each activity has its own detail screen.
         -- Importance: High
@@ -102,6 +102,7 @@
             - [x] US-12.3: Develop backend APIs for submitting/fetching comments, likes, reviews, ratings.
             - [x] US-12.4: Implement frontend components for social interactions.
             - [x] US-12.5: Integrate frontend with social feature APIs.
+            - [x] US-12.6: Refactor social interaction logic into custom hooks (useComments, useLikes, useRatings).
     - [x] **(P1)** US-13: As a user, I want to customize preferences and language.
         -- Context: Settings screen with toggles/options.
         -- Importance: Medium
@@ -152,14 +153,14 @@
             - [x] US-17.4: Implement frontend friend list and management.
             - [x] US-17.5: Design/implement activity sharing functionality with friends.
             - [x] US-17.6: Implement visibility controls for shared activities. (Note: Full implementation would require significant database schema changes and backend logic for granular control.)
-    - [ ] **(P2)** US-18: As a user, I want to see trending/highly-rated activities.
+    - [x] **(P2)** US-18: As a user, I want to see trending/highly-rated activities.
         -- Context: Curated "Trending Now" section. Can be based on ratings/engagement.
         -- Importance: Low
         -- Dependencies: US-12
         -- Sub-tasks:
             - [x] US-18.1: Define criteria for "trending" and "highly-rated" (e.g., recent bookings, average rating).
             - [x] US-18.2: Develop backend logic/API to identify and fetch trending/highly-rated activities.
-            - [ ] US-18.3: Design and implement "Trending Now" section on homepage/activity list.
+            - [x] US-18.3: Design and implement "Trending Now" section on homepage/activity list.
 
 ### Merchant Features:
     - [x] **(P0)** US-08: As a merchant, I want to submit my business for approval.
@@ -177,7 +178,7 @@
         -- Importance: High
         -- Dependencies: US-08, US-06 (for booking data)
         -- Sub-tasks:
-            - [ ] US-10.1: Design merchant dashboard UI/UX (overview, bookings, performance metrics, schedule).
+            - [x] US-10.1: Design merchant dashboard UI/UX (overview, bookings, performance metrics, schedule).
             - [x] US-10.2: Develop backend API to fetch merchant's bookings.
             - [x] US-10.3: Develop backend API to fetch merchant's performance metrics (e.g., total bookings, revenue).
             - [x] US-10.4: Implement frontend merchant dashboard components (graphs, tables).
@@ -191,12 +192,14 @@
         -- Dependencies: US-08, US-04 (for activity listings)
         -- Sub-tasks:
             - [x] US-09.1: Design admin dashboard UI/UX (merchant applications, activity listings, user management).
-            - [x] US-09.2: Implement admin authentication and authorization (permission gates).
+            - [x] US-09.2: Implement admin authentication and authorization (permission gates). (Admin check abstracted to `utils/auth/roles.ts`)
+            - [x] US-09.8: Securely manage admin email using environment variables.
             - [x] US-09.3: Develop backend API for approving/rejecting merchant applications.
             - [x] US-09.4: Develop backend API for CRUD operations on activity listings.
             - [x] US-09.5: Develop backend API for basic user management (e.g., view, suspend).
             - [x] US-09.6: Implement frontend admin dashboard components.
             - [x] US-09.7: Integrate frontend with admin APIs.
+            - [x] US-09.9: Refactor Create and Edit Activity modals into separate components.
 
 ## Current Status:
 *   Project initialization. The Product Requirement Document (PRD), Architecture Document, and Technical Specifications have been created. The initial task backlog is now defined based on the user stories in the PRD. The project is ready to move into the planning and development phase. User stories have been broken down into sub-tasks.

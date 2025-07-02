@@ -1,0 +1,97 @@
+Of course. Refactoring a codebase is a great way to improve its long-term health, performance, and maintainability. Based on a thorough review of your project's structure, documentation, and code, here is a clear, step-by-step plan with atomic tasks designed to be easy to follow.
+
+This plan focuses on high-impact improvements that align with modern Next.js best practices, enhance security, and reduce code repetition.
+
+Phase 1: Centralize Layout and Navigation (High-Impact, Low-Effort)
+
+Goal: Remove repetitive Header and Footer code from every page and establish a single, consistent layout for the entire application.
+
+Task 1.1: Enhance the Root Layout
+
+Action: Open src/outgo-app/src/app/layout.tsx.
+
+Change: Copy the <header> and <footer> sections from any of the main pages (like src/outgo-app/src/app/page.tsx).
+
+Implementation: Place the <header> before the {children} prop and the <footer> after the {children} prop. This will wrap every page in your application with the same navigation and footer.
+
+Task 1.2: Clean Up Individual Pages
+
+Action: Go through each page file that has the <header> and <footer> (page.tsx, activities/page.tsx, profile/page.tsx, etc.).
+
+Change: Delete the now-redundant <header> and <footer> JSX from each of these files, leaving only the content specific to that page.
+
+Phase 2: Harden the Backend (Security and Consistency)
+
+Goal: Remove hardcoded values, centralize business logic, and standardize database interactions in your API routes.
+
+Task 2.1: Abstract the Admin Check
+
+Action: Create a new utility file, for example, src/outgo-app/src/utils/auth/roles.ts.
+
+Change: Inside this file, create a function export const isAdmin = (user) => { ... }; that contains the logic for checking if a user is an administrator.
+
+Implementation: Replace the hardcoded 'admin@example.com' check in src/outgo-app/src/middleware.ts and any other admin-related files with a call to this new isAdmin(user) function.
+
+Task 2.2: Securely Manage the Admin Email---------------------------------------------------------------------------------------------------------------------------------------------------
+
+Action: Create a .env.local file in the root of your outgo-app project if it doesn't exist.
+
+Change: Add a new environment variable: ADMIN_EMAIL=admin@example.com.
+
+Implementation: Modify your new isAdmin function to read the email from process.env.ADMIN_EMAIL instead of using a hardcoded string.
+
+Task 2.3: Standardize the Supabase Client in API Routes
+
+Action: Review all files in src/outgo-app/src/app/api/.
+
+Change: Many files import supabase directly from utils/supabase/client. For server-side routes, it's better to use the client that is aware of the request context.
+
+Implementation: In each API route, replace the direct import with the createRouteHandlerClient({ cookies }) helper from @supabase/auth-helpers-nextjs, as is already done correctly in api/admin/users/route.ts. This ensures consistent session management.
+
+Phase 3: Optimize Data Fetching with Server Components
+
+Goal: Improve initial page load performance by shifting data fetching from the client-side to the server-side, which is a core strength of Next.js.
+
+Task 3.1: Convert the Main Activities Page to a Server Component
+
+Action: Open src/outgo-app/src/app/activities/page.tsx.
+
+Change: Remove the 'use client'; directive at the top. Change the function signature to be export default async function Activities() { ... }.
+
+Implementation: Delete the useState and useEffect hooks used for fetching activities. Instead, call your Supabase logic to fetch activities directly within the component, before the return statement. The data will now be pre-rendered on the server.
+
+Task 3.2: Isolate Client-Side Interactivity
+
+Action: The filtering and search inputs on the activities page require client-side state.
+
+Change: Create a new component file, src/outgo-app/src/components/ActivityFilters.tsx.
+
+Implementation: Move the search input, sort dropdown, and related useState logic into this new component. Mark this new component with 'use client';. The main page remains a Server Component, and you will just import this smaller interactive part.
+
+Task 3.3: Refactor the Homepage
+
+Action: Open src/outgo-app/src/app/page.tsx.
+
+Change: Apply the same pattern. Convert it to an async Server Component, remove the useEffect for data fetching, and fetch the "Featured Activities" directly within the component.
+
+Phase 4: Component and Logic Refactoring
+
+Goal: Break down large components into smaller, more manageable pieces and encapsulate related logic into custom hooks.
+
+Task 4.1: Deconstruct the Admin Activities Page
+
+Action: The file src/outgo-app/src/app/admin/activities/page.tsx contains large blocks of JSX for the "Create" and "Edit" modals.
+
+Change: Create two new components: CreateActivityModal.tsx and EditActivityModal.tsx.
+
+Implementation: Move the form and logic for each modal into its respective component. The main page will become much cleaner, only managing the state of whether the modals are visible.
+
+Task 4.2: Simplify the Activity Detail Page
+
+Action: The page at src/outgo-app/src/app/activities/[id]/page.tsx has many useState and handler functions for comments, likes, and favorites.
+
+Change: Create custom hooks to manage this logic. For example, useComments(activityId) would encapsulate the fetching, state, and submission logic for comments.
+
+Implementation: Create a src/outgo-app/src/hooks/ directory. Inside, create useComments.ts, useLikes.ts, etc. Replace the complex logic in the page component with simple calls to these hooks (e.g., const { comments, submitComment } = useComments(activity.id);). This dramatically simplifies the component and makes the logic reusable.
+
+By following these phases, you will systematically improve your codebase, making it more performant, easier to maintain, and more secure.

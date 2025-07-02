@@ -11,7 +11,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     // Admin check (simplified - in a real app, use proper roles/permissions)
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user || user.email !== 'admin@example.com') { // Placeholder for admin check
+    import { isAdmin } from '@/utils/auth/roles';
+
+if (!user || !isAdmin(user)) { // Admin check
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -45,7 +47,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     // Admin check (simplified - in a real app, use proper roles/permissions)
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user || user.email !== 'admin@example.com') { // Placeholder for admin check
+    import { isAdmin } from '@/utils/auth/roles';
+
+if (!user || !isAdmin(user)) { // Admin check
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

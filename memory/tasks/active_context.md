@@ -29,6 +29,12 @@
 *   Resolved database schema issues for `activities` and `merchants` tables.
 *   Fixed client component errors in `signin/page.tsx` and `signup/page.tsx`.
 *   Resolved user sign-up data not saving by implementing profile creation logic in the sign-up API and updating the sign-up form.
+*       Abstracted admin check logic into `src/outgo-app/src/utils/auth/roles.ts` and updated all relevant files to use this new utility.
+*   Secured admin email by replacing hardcoded values with an environment variable (`ADMIN_EMAIL`) and updating `.env.local`.
+*   Converted the main activities page to a server component, moving data fetching to the server and creating a new client component for interactive filters.
+*   Refactored activity filtering and search functionality into a new client component `src/outgo-app/src/components/ActivityFilters.tsx`, and integrated it into `src/outgo-app/src/app/activities/page.tsx`.
+*   Refactored Create and Edit Activity modals in `src/outgo-app/src/app/admin/activities/page.tsx` into separate components (`CreateActivityModal.tsx` and `EditActivityModal.tsx`).
+*   Refactored social interaction logic (comments, likes, ratings, favorites) in `src/outgo-app/src/app/activities/[id]/page.tsx` into custom hooks (`useComments.ts`, `useLikes.ts`, `useFavorites.ts`, `useRatings.ts`).
 
 ## Next Steps:
 *   Thoroughly test all implemented features to ensure they meet the requirements and are free of bugs. (Initial testing of homepage, sign-in, and sign-up routes completed, including user profile creation.)

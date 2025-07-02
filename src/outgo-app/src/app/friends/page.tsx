@@ -95,21 +95,7 @@ export default function Friends() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md p-4 flex justify-between items-center">
-        <div className="text-2xl font-bold text-gray-800">OutGo</div>
-        <nav className="space-x-4">
-          <Link href="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-          <Link href="/activities" className="text-gray-600 hover:text-blue-600">Activities</Link>
-          <Link href="/profile" className="text-gray-600 hover:text-blue-600">Profile</Link>
-          <Link href="/settings" className="text-gray-600 hover:text-blue-600">Settings</Link>
-          <Link href="/friends" className="text-blue-600 font-semibold">Friends</Link>
-        </nav>
-        <div className="space-x-4">
-          <Link href="/signin" className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition duration-300">Sign In</Link>
-          <Link href="/signup" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300">Sign Up</Link>
-        </div>
-      </header>
+      
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">My Friends</h1>
@@ -159,17 +145,7 @@ export default function Friends() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-8">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2025 OutGo. All rights reserved.</p>
-          <div className="flex justify-center space-x-4 mt-4">
-            <Link href="#" className="text-gray-400 hover:text-white">About Us</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Contact</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Privacy Policy</Link>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 }

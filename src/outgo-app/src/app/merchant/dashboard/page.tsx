@@ -44,15 +44,15 @@ export default function MerchantDashboard() {
           return;
         }
 
-        // In a real application, you would fetch the merchant_id associated with the user
-        // For now, we'll use a placeholder or assume the user ID is the merchant ID if applicable
-        // For demonstration, let's assume a fixed merchant ID or derive it from user.id if it's a 1:1 mapping
-        // For now, let's use a dummy merchant ID. Replace with actual logic.
-        const dummyMerchantId = 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'; // Replace with dynamic merchant ID
-        setMerchantId(dummyMerchantId);
+        const merchantIdResponse = await fetch('/api/merchant/get-id');
+        if (!merchantIdResponse.ok) {
+          throw new Error('Failed to fetch merchant ID');
+        }
+        const { merchantId } = await merchantIdResponse.json();
+        setMerchantId(merchantId);
 
         // Fetch metrics
-        const metricsResponse = await fetch(`/api/merchant/${dummyMerchantId}/metrics`);
+        const metricsResponse = await fetch(`/api/merchant/${merchantId}/metrics`);
         if (metricsResponse.ok) {
           const metricsData = await metricsResponse.json();
           setMetrics(metricsData);
@@ -62,7 +62,7 @@ export default function MerchantDashboard() {
         }
 
         // Fetch bookings
-        const bookingsResponse = await fetch(`/api/merchant/${dummyMerchantId}/bookings`);
+        const bookingsResponse = await fetch(`/api/merchant/${merchantId}/bookings`);
         if (bookingsResponse.ok) {
           const bookingsData = await bookingsResponse.json();
           setBookings(bookingsData);
@@ -100,18 +100,7 @@ export default function MerchantDashboard() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-md p-4 flex justify-between items-center">
-        <div className="text-2xl font-bold text-gray-800">OutGo Merchant</div>
-        <nav className="space-x-4">
-          <Link href="/merchant/dashboard" className="text-blue-600 font-semibold">Dashboard</Link>
-          <Link href="/merchant/activities" className="text-gray-600 hover:text-blue-600">My Activities</Link>
-          <Link href="/merchant/bookings" className="text-gray-600 hover:text-blue-600">Bookings</Link>
-        </nav>
-        <div className="space-x-4">
-          <Link href="/signin" className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition duration-300">Sign Out</Link>
-        </div>
-      </header>
+      
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Merchant Dashboard</h1>
@@ -185,17 +174,7 @@ export default function MerchantDashboard() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-8">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2025 OutGo. All rights reserved.</p>
-          <div className="flex justify-center space-x-4 mt-4">
-            <Link href="#" className="text-gray-400 hover:text-white">About Us</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Contact</Link>
-            <Link href="#" className="text-gray-400 hover:text-white">Privacy Policy</Link>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 }

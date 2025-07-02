@@ -23,7 +23,9 @@ export default function AdminUsers() {
 
   const checkAdmin = async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user || user.email !== 'admin@example.com') { // Placeholder for admin check
+    import { isAdmin } from '@/utils/auth/roles';
+
+if (!user || !isAdmin(user)) { // Admin check
       router.push('/signin');
       return false;
     }
