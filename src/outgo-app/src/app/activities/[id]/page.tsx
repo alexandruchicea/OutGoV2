@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
 import { useState, useEffect } from 'react';
-import BookingCalendar from '../../../../components/BookingCalendar';
+import BookingCalendar from '@/components/BookingCalendar';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface Activity {
@@ -82,10 +82,8 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
     fetchData();
   }, [params.id, supabase]);
 
-  const { comments, newCommentText, setNewCommentText, handleSubmitComment } = useComments(activity?.id || '', user?.id);
-  const { likesCount, userLiked, handleLikeToggle } = useLikes(activity?.id || '', user?.id);
-  const { isFavorite, handleFavoriteToggle } = useFavorites(activity?.id || '', user?.id);
-  const { userRating, reviewText, setReviewText, handleSubmitRating } = useRatings(activity?.id || '', user?.id);
+  
+
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);

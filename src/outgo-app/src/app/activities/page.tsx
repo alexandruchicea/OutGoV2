@@ -85,7 +85,12 @@ export default function Activities() {
 
 
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">All Activities</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 text-center">All Activities</h1>
+          <a href="/activities/new" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            List Activity
+          </a>
+        </div>
 
         <ActivityFilters onApplyFilters={handleApplyFilters} />
 

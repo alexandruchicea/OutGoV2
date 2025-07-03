@@ -39,6 +39,11 @@
 
 *   Fixed authentication state not updating immediately after sign-in/sign-out by resolving synchronous `cookies()` calls in `src/outgo-app/src/utils/supabase/server.ts`, `src/outgo-app/src/app/layout.tsx`, and `src/outgo-app/src/app/api/auth/signin/route.ts`, and adding `router.refresh()` to `src/outgo-app/src/app/signin/page.tsx`.
 *   Configured `next.config.ts` to allow image loading from `example.com` to resolve `next/image` unconfigured hostname error.
+*   Implemented "List Activity" feature, including:
+    *   Created `src/outgo-app/src/app/activities/new/page.tsx` for the new activity listing page.
+    *   Created `src/outgo-app/src/app/activities/new/NewActivityForm.tsx` for the activity submission form.
+    *   Updated `src/outgo-app/src/utils/supabase/client.ts` to export `createClientComponentClient` and installed `@supabase/ssr`.
+    *   Added a "List Activity" button to `src/outgo-app/src/app/activities/page.tsx` to navigate to the new activity form.
 
 ## Next Steps:
 *   Thoroughly test all implemented features to ensure they meet the requirements and are free of bugs. (Initial testing of homepage, sign-in, and sign-up routes completed, including user profile creation.)

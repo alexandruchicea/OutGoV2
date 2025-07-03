@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '../../../../../../utils/supabase/client';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const { id: merchantId } = params;
 
-    // Fetch total activities
+    const supabase = createRouteHandlerClient({ cookies });
     const { count: totalActivities, error: activitiesError } = await supabase
       .from('activities')
       .select('id', { count: 'exact' })
