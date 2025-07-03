@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '../../../utils/supabase/client';
+import { createServerSupabaseClient } from '../../../utils/supabase/server';
 
 export async function GET(request: Request) {
   try {
@@ -10,6 +10,7 @@ export async function GET(request: Request) {
     const userLon = searchParams.get('longitude');
     const category = searchParams.get('category');
 
+    const supabase = createServerSupabaseClient();
     let query = supabase.from('activities').select('*');
 
     if (searchTerm) {
@@ -65,6 +66,37 @@ export async function GET(request: Request) {
     return NextResponse.json(activities, { status: 200 });
   } catch (error: any) {
     console.error('Unexpected error:', error.message);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const supabase = createServerSupabaseClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const activityData = await request.json();
+
+    // Ensure merchant_id is set to the authenticated user's ID
+    // This assumes the user creating the activity is a merchant
+    // and their user ID is also their merchant_id.
+    // If merchants have separate IDs, this logic needs adjustment.
+    activityData.merchant_id = user.id;
+
+    const { data, error } = await supabase.from('activities').insert([activityData]).select();
+
+    if (error) {
+      console.error('Error inserting activity:', error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data[0], { status: 201 });
+  } catch (error: any) {
+    console.error('Unexpected error during activity POST:', error.message);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
